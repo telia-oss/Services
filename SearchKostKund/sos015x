@@ -1,0 +1,15 @@
+--Service creation
+{
+  "dburl": "http://131.116.44.144:1316/services/DB2ServiceManager",
+  "username": "a472inb",
+  "password": "INblatS2",
+  "sqlStmt": "SELECT  CAST(B.CUST_ID AS VARCHAR(14) FOR SBCS DATA) AS CUST_ID ,B.CUST_OID FROM STHDSN6.TENGRA2.CUST_ID_HIST_DATA B WHERE  B.CUST_PARTN_ID=:CURR_CUST_PARTN_ID AND B.CUST_OID=:CURR_CUST_OID",
+  "collectionID": "SYSIBMSERVICE",
+  "owner": "COMINAT5",
+  "validate": "BIND",
+  "serviceName": "sos015x",
+  "description": "sos015x with CURR_CUST_PARTN_ID,CURR_CUST_OID",
+  "requestType": "createService",
+  "version": "V1",
+  "response": ""
+}   
