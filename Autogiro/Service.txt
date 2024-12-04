@@ -1,0 +1,167 @@
+curl -X GET http://131.116.44.144:1316/services/SYSIBMSERVICE/sos17/V1 -H "Content-Type: application/json" -u a472inb:INblatS2 | jq
+ 
+get u can run in linux
+ 
+ 
+ {
+  "dburl": "http://131.116.44.144:1316/services/DB2ServiceManager",
+  "username": "a472inb",
+  "password": "INblatS2",
+  "collectionID": "SYSIBMSERVICE",
+  "serviceName": "auto03",
+  "requestType": "dropService",
+  "version": "V1",
+  "response": ""
+}
+
+{
+  "dburl": "http://131.116.44.144:1316/services/DB2ServiceManager",
+  "username": "a472inb",
+  "password": "INblatS2",
+  "sqlStmt": "SSELECT A.GIROTYP, A.ANSLUTNINGSID, B.FAKTKTO, A.ANSLUT_DATUM, A.AVSLUT_DATUM, A.PERSONNR, A.STATUSKOD, A.BEVAK_MARKERING, A.MEDDELANDE_MARK, A.LEV_SYSTEM, DATE('9999-12-31') AS CONN_HIST_DATE, DATE('9999-12-31') AS BACT_HIST_DATE FROM  STHDSN6.TENA2.FGT0200  B, STHDSN6.TENA2.FGT0100 A WHERE A.ANSLUTNINGSID = B.ANSLUTNINGSID AND B. FAKTKTO = :FAKTKTO AND      B.ANSLUTNINGSID =:ANSLUTNINGSID UNION SELECT C.GIROTYP, C.ANSLUTNINGSID, D.FAKTKTO, C.ANSLUT_DATUM, C.AVSLUT_DATUM, C.PERSONNR, C.STATUSKOD, C.BEVAK_MARKERING, C.MEDDELANDE_MARK, C.LEV_SYSTEM, DATE(C.HIST_DATUM) AS CONN_HIST_DATE , DATE(B.UPPLDAT) AS BACT_HIST_DATE FROM  STHDSN6.TENA2.FGT1000 D, STHDSN6.TENA2.FGT0900 C WHERE C.ANSLUTNINGSID = D.ANSLUTNINGSID AND D.FAKTKTO =:FAKTKTO AND D.ANSLUTNINGSID =:ANSLUTNINGSID",
+  "collectionID": "SYSIBMSERVICE",
+  "serviceName": "auto06",
+  "description": "auto06 based on ANSLUTNINGSID AND FAKTKTO",
+  "requestType": "createService",
+  "version": "V1",
+  "response": ""
+}
+-------------------To create a service using the curl command-------------------
+
+----------------------------------------
+curl -X 'POST'  \
+'http://131.116.44.144:1316/services/DB2ServiceManager'  \
+-H 'accept: application/json'   \
+-H 'Content-Type: application/json' \
+-u a472inb:INblatS2 \
+-d '{
+"requestType": "createService",
+"sqlStmt": "FAKTKTO",
+"collectionID": "SYSIBMSERVICE",
+"serviceName": "PPS01",
+"description": "PPS01 based on   CUST_PARTN_ID  AND SBSCT_CUST_OID"
+}'
+
+---
+curl -X GET http://131.116.44.144:1316/services/SYSIBMSERVICE/auto06/V1 -H "Content-Type: application/json" -u a472inb:INblatS2 | jq
+
+----------------------------------
+Test the service
+-------------------------------
+
+{
+  "dburl": "http://131.116.44.144:1316/services/SYSIBMSERVICE/test01/V1",
+  "username": "a472inb",
+  "password": "INblatS2",
+  "params": {
+   "ANSLUTNINGSID": "000000000001558030"
+  },
+  "response": ""
+}
+
+curl -X POST \
+http://131.116.44.144:1316/services/SYSIBMSERVICE/test01/V1 \
+-H 'accept: application/json'   \
+-H 'Content-Type: application/json' \
+-u a472inb:INblatS2 \
+-d '{
+ "ANSLUTNINGSID": "000000000001558030"
+}'
+
+
+curl -X POST \
+http://131.116.44.144:1316/services/SYSIBMSERVICE/auto04/V1 \
+-H 'accept: application/json'   \
+-H 'Content-Type: application/json' \
+-u a472inb:INblatS2 \
+-d '{
+"ANSLUTNINGSID": "000000000001059294"
+}'
+
+--when we get priviledge issue--
+curl -X 'POST'  \
+'http://131.116.44.144:1316/services/DB2ServiceManager'
+  \
+-H 'accept: application/json'   \
+-H 'Content-Type: application/json' \
+-u a472inb:INblatS2 \
+-d '{
+"requestType": "createService",
+  "sqlStmt": "",
+  "collectionID": "SYSIBMSERVICE",
+  "serviceName": "ads03",
+  "description": "ads03 with CUST_PARTN_ID,CUST_OID",
+  "OWNER": "COMINAT5",
+  "VALIDATE": "BIND",
+  "version": "V1"
+}'
+----------------------------
+PENDING TASK
+06-09-2024
+Correct test data for duplicate billing account-Done
+Correct test data for duplicate conn -DOne
+Multplie duplicate connection id -Done
+Cosmetic changes-Done 
+Connection id and billing at the center-Not req
+
+
+05-09-2024
+OK and clear alignmenent-Done
+invoice status -blank -not sent-DOne
+History-inactive-Done
+Invoice information in table
+new search naviagte to search page
+Swedish-Done
+BACT_HIST_DATEa from 1000 if not present then AVSLUT_DATUM-Done
+
+
+----test data--Autogiro--------------------------------------------------------------------
+FAKTURANR         FAKTURAKTO 
+1085646723        E0006194267
+1089304823        E0011999047
+1091471323        E0012516719
+1091474723        E0001075336
+-------------------i/p-COnn id-----------
+Without billing acc
+000000000001558030
+------------------
+Single bill acc 
+000000000001001684 E0001040137	
+000000000001059294 E0008695268	
+--------------------
+multiple billing acc (diff acc)
+000000000005085220
+------------------
+Duplicate billing account
+000000003906140334  E0009736733	--both E0009736733
+----------------------
+ duplicate connection id
+E0009986571 000000003207061411  
+-------------------i/p- bill acc-----------
+Single connection id--
+E0000989311
+--------------------------
+Single connection id with multplie invoice
+E0000610096
+
+------------------test data--Priceplan----------------------------------------------
+P0XYXX96003-cust
+----------------------------------------------------
+Customer IDs for Price Plan Tab for pagination
+more than 20 Price Plans
+ 
+E0XXXX99763
+
+E0XXXY02946
+
+E0XXXY06206
+
+E0XXXX99354
+
+E0XXXY78597
+
+E0XXXY11322
+
+E0XXXX18008
+
+ 
