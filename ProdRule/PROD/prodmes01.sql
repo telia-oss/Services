@@ -1,0 +1,21 @@
+SELECT CAST(BACCT_MSG_ID AS VARCHAR(14) FOR SBCS DATA ) AS BACCT_MSG_ID, MSG_LINE_TXT, EFFEC_START_DATE, EFFEC_STOP_DATE FROM STHDSN1.TICGRP1.BACCT_MSG_DATA WHERE CURR_CUST_OID =:CURR_CUST_OID AND BACCT_PARTN_ID =:BACCT_PARTN_ID AND BACCT_OID =:BACCT_OID ORDER BY  BACCT_MSG_ID DESC 
+		
+{
+  "dburl": "http://131.116.44.150:1317/services/DB2ServiceManager",
+  "username": "a472inb",
+  "password": "INblatS2",
+  "sqlStmt": "SELECT CAST(BACCT_MSG_ID AS VARCHAR(14) FOR SBCS DATA ) AS BACCT_MSG_ID, MSG_LINE_TXT, EFFEC_START_DATE, EFFEC_STOP_DATE FROM STHDSN1.TICGRP1.BACCT_MSG_DATA WHERE CURR_CUST_OID =:CURR_CUST_OID AND BACCT_PARTN_ID =:BACCT_PARTN_ID AND BACCT_OID =:BACCT_OID ORDER BY  BACCT_MSG_ID DESC ",
+  "collectionID": "SYSIBMSERVICE",
+  "serviceName": "prodmes01",
+  "owner": "COMINAT5",
+   "validate": "BIND",
+  "description": "prodmes01 based on BACCT_PARTN_ID,BACCT_OID and CURR_CUST_OID ",
+  "requestType": "createService",
+  "version": "V1",
+  "response": ""
+}
+curl -X GET http://131.116.44.152:1317/services/SYSIBMSERVICE/prodmes01/V1 -H "Content-Type: application/json" -u a472inb:INblatS2 | jq
+
+
+
+
